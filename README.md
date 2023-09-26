@@ -15,5 +15,5 @@ https://www.figma.com/file/BG5RsPtSMifADucseijI2U/Untitled?type=design&node-id=0
 
 ### Use Case diagram
 
-<img src="./UML/blog system .jpeg.png" alt="Use Case diagram">
+<img src="./UML/blog system .jpeg" alt="Use Case diagram">
 
