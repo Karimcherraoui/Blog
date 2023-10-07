@@ -1,8 +1,8 @@
 const express =  require('express');
 const router = express.Router();
 const postController = require('../Controller/Post');
-const postModel = require('../model/posts')
 const categorieController = require('../Controller/Categorie');
+const postModel = require('../model/posts')
 const multer  = require('multer')
 const upload = multer({ dest: 'temp' })
 
@@ -10,9 +10,7 @@ const upload = multer({ dest: 'temp' })
 router.get('/', postController.getAllPosts)
 
 // --------------------------- Gestion ------------------------------
-router.get('/gestion', (req,res)=>{
-    res.render('gestion',{ title: `Page de gestion` });
-})
+router.get('/gestion', categorieController.getAllCategories)
 router.post('/gestion/addArticle',upload.single("image"),postController.addPost);
 router.get('/gestion/getallpost', postController.getAllPosts);
 router.post('/gestion/update/:id',async (req, res)=>{
@@ -29,12 +27,18 @@ router.post('/gestion/update/:id',async (req, res)=>{
         res.status(500).send("Internal Server Error");
       }
 });
+router.post('/gestion/addCategorie',categorieController.addCategorie);
+
+
 // --------------------------- Article ------------------------------
 router.get('/article/:id', postController.getPostById);
 router.post('/article/delete/:id', postController.deletePost);
-
 router.post('/article/update/:id',upload.single("image"), postController.updatePost);
 
+// --------------------------- Categorie ------------------------------
+
+router.post('/categorie/delete/', categorieController.deleteCategorie);
+router.post('/categorie/update/', categorieController.updateCategorie);
 
 
 

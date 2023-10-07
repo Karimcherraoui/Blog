@@ -2,11 +2,11 @@
     <h1 class="text-center text-3xl mb-20 mt-10 text-bold	">Gerer Categorie</h1>
 <!-- --------------------------- Gerer Categorie --------------------------------- -->
 <div class="flex flex-row gap-10">
-        
+
         <div class="flex flex-col w-1/3 justify-center items-center">
             <h3 class="mb-3">Add Categorie</h3>
-            <form action="/action_page.php">
-                <input class="border rounded px-7" placeholder=" Enter name categorie" type="text" id="categorie" name="categorie" ><br><br>
+            <form action="/gestion/addCategorie" method="post">
+                <input class="border rounded px-7" placeholder=" Enter name categorie" type="text" id="categorie" name="name" ><br><br>
                 <div class="flex justify-center"> <!-- Use flex to center the input -->
                     <input class="py-2 px-8 rounded bg-green-400 text-white" type="submit" value="Add">
                 </div>             
@@ -18,23 +18,29 @@
 
              <div class="flex flex-col w-1/3 justify-center items-center">
                 <h3 class="mb-1">Update Categorie</h3>
-                <form action="/action_page.php">
-                    <select class="m-4 border px-2" name="cars" id="cars">
-                        <option value="volvo">Tech</option>
-                      </select>
-                    <input class="border rounded px-7 mb-4" placeholder=" Enter new name " type="text" id="categorie" name="categorie" >
-                    <div class="flex justify-center"> <!-- Use flex to center the input -->
-                        <input class="py-2 px-4 rounded bg-blue-400 text-white" type="submit" value="Update">
-                    </div>          
-                    </form> 
-    
+                
+                <form action="/categorie/update/" method="post">
+                    <div class="flex flex-row gap-4 my-4">
+                        <select class=" px-16 border-2" name="categorieID" >
+                            <% categories.forEach(element => { %>
+                                <option  value="<%- element.categorieID%>"> <%- element.name%></option>
+                                <% }); %>
+                            </select>
+                            <input class="border rounded px-7 " placeholder=" Enter new name " type="text" id="categorie" name="nameCategorie" >
+                        </div>
+                            <div class="flex justify-center"> <!-- Use flex to center the input -->
+                                <input class="py-2 px-4 rounded bg-blue-400 text-white" type="submit" value="Update">
+                            </div>          
+                        </form> 
                  </div>
-    
+                 
                  <div class="flex flex-col w-1/3 justify-center items-center">
-                    <h3 class="mb-1">Delete Categorie</h3>
-                    <form action="/action_page.php">
-                        <select class="m-4 px-16 border-2" name="cars" id="cars">
-                            <option value="volvo">Tech</option>
+                     <h3 class="mb-1">Delete Categorie</h3>
+                     <form action="/categorie/delete/" method="post">
+                         <select class="m-4 px-16 border-2" name="categorieID" >
+                             <% categories.forEach(element => { %>
+                            <option  value="<%- element.categorieID%>"> <%- element.name%></option>
+                            <% }); %>
                           </select>
                         <div class="flex justify-center"> <!-- Use flex to center the input -->
                             <input class="py-2 px-4 rounded bg-red-400 text-white" type="submit" value="Delete">

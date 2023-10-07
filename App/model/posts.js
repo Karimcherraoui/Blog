@@ -35,7 +35,7 @@ const con = require('../db')
     con.query(query,params,(err,res)=>{
       res.render('update',{ title: `Page de gestion` });
       if (err) {
-        console.log(`Erreur lors de l'update du post :`, err);
+        console.log(`Erreur lors d'update du post :`, err);
       } else {
         console.log('Post update avec succès');
       }
@@ -51,6 +51,11 @@ const con = require('../db')
         console.log('Post est supprimer avec succès');
       }
     })
+  }
+
+  exports.searchPost = async ()=> {
+    SELECT * FROM your_table WHERE column_to_search LIKE '%search_term%';
+
   }
 
   

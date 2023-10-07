@@ -1,12 +1,16 @@
 const postModel = require("../model/posts");
+const categorieModel = require("../model/categorie");
+
 const Joi = require("joi");
 const fs = require("fs");
 
 exports.getAllPosts = async (req, res) => {
   let blogs = await postModel.getPosts();
+ let categories = await categorieModel.getAllCategories();
+
   try {
     if (blogs) {
-      res.render("home", { blogs , title:"Home Page"});
+      res.render("home", { blogs ,categories, title:"Home Page"});
     } else {
       res.status(404).send("No posts found.");
     }
