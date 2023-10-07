@@ -57,12 +57,13 @@
 <div>
     <h1 class="text-center text-3xl mb-20 mt-10 text-bold" >Ajouter nouveau article</h1>
 
-    <div class="ml-24">
-        <form action="/gestion/addArticle" method="post" enctype="multipart/form-data">
+    <% article.forEach(element => { %>
+        <div class="ml-24">
+        <form action="/article/update/<%- element.postID %>" method="post" enctype="multipart/form-data">
             <label class="mr-20" for="titre">Titre d'article : </label>
-            <input class="border rounded px-7 mb-4 w-1/2" placeholder=" Enter Le titre d'article" type="text" id="titre" name="title" ><br>
+            <input class="border rounded px-7 mb-4 w-1/2" value="<%- element.title %>" type="text" id="titre" name="title"   ><br>
             <label class="mr-16" for="auteur">Auteur d'article : </label>
-            <input class="border rounded px-7 mb-4" placeholder=" Enter auteur d'article" type="text" id="auteur" name="auteur" >
+            <input class="border rounded px-7 mb-4" value="<%- element.auteur %>" type="text" id="auteur" name="auteur" >
 
 
             <div class="flex flex-row  items-center">
@@ -78,19 +79,21 @@
             </div>
             <div class="flex flex-row">
                 <p class="mr-14" for="contenu">Contenu d'article : </p>
-                <textarea class="border w-1/2 " id="w3review" name="content" rows="4" cols="50"></textarea>
+                <textarea class="border w-1/2 " id="w3review" name="content" rows="4" cols="50"><%- element.content %></textarea>
             </div>
             <div class="mt-10">
                 <label class="mr-9" for="categorie">Selection image : </label>
+                <input type="hidden" name="imagePrevious"  value="<%- element.image %>">
                 <input type="file" name="image" accept="image/*" />
                 <br><br>
             </div>
 
             <div class="flex justify-center"> <!-- Use flex to center the input -->
-                <input class="py-2 px-4 mt-10 rounded bg-green-400 text-white" type="submit" value="Ajouter Article">
+                <input class="py-2 px-4 mt-10 rounded bg-green-400 text-white" type="submit" value="Update Article">
             </div>          
             </form> 
     </div>
+    <% }); %>
 
 </div>
 

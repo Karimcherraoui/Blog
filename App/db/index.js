@@ -1,6 +1,6 @@
-let mysql = require('mysql');
+let mysql = require('mysql2/promise');
 
-let connection = mysql.createConnection({
+let connection =  mysql.createPool({
   host: 'localhost',
   port: 3307, 
   user: 'root',
@@ -8,15 +8,5 @@ let connection = mysql.createConnection({
   database: 'Blog' 
 });
 
-connection.connect(function(err) {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-    return;
-  }
-
-  console.log('Connected to the database');
-  
-  
-});
 
 module.exports = connection;
