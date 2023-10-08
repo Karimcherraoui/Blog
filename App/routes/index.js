@@ -12,7 +12,9 @@ router.get('/', postController.getAllPosts)
 // --------------------------- Gestion ------------------------------
 router.get('/gestion', categorieController.getAllCategories)
 router.post('/gestion/addArticle',upload.single("image"),postController.addPost);
-router.get('/gestion/getallpost', postController.getAllPosts);
+router.get('/gestion/getallpost', postController.getAllPosts); //khasni ncreer route akhor
+router.get('/gestion/search/getPosts', postController.getPostSearched); //khasni ncreer route akhor
+
 router.post('/gestion/update/:id',async (req, res)=>{
     let idPost = req.params.id;
     let article = await postModel.getPostById(idPost);
@@ -34,6 +36,7 @@ router.post('/gestion/addCategorie',categorieController.addCategorie);
 router.get('/article/:id', postController.getPostById);
 router.post('/article/delete/:id', postController.deletePost);
 router.post('/article/update/:id',upload.single("image"), postController.updatePost);
+// router.get('/search',postController.searchPost)
 
 // --------------------------- Categorie ------------------------------
 

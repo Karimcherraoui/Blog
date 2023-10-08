@@ -4,6 +4,29 @@ const categorieModel = require("../model/categorie");
 const Joi = require("joi");
 const fs = require("fs");
 
+
+exports.getPostSearched = async (req, res) => {
+  let searchTitle = req.query.searchedName;
+  let categories = await categorieModel.getAllCategories();
+  let searchBlog = await postModel.searchPost(searchTitle);
+
+  console.log('searchBlog:', searchBlog);
+
+  try {
+    if (searchBlog) {
+      res.render("search", { searchBlog, categories, title: "search Page" });
+    } else {
+      res.status(404).send("No posts found.");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+
+
+
 exports.getAllPosts = async (req, res) => {
   let blogs = await postModel.getPosts();
  let categories = await categorieModel.getAllCategories();
@@ -23,9 +46,7 @@ exports.getAllPosts = async (req, res) => {
 exports.getPostById = async (req, res) => {
 
     let idPost = req.params.id;
-    console.log(idPost)
     let article = await postModel.getPostById(idPost);
-    
     try {
       if (article) {
         res.render("article", { article ,title:article.title });

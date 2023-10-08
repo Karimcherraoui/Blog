@@ -53,10 +53,21 @@ const con = require('../db')
     })
   }
 
-  exports.searchPost = async ()=> {
-    SELECT * FROM your_table WHERE column_to_search LIKE '%search_term%';
-
-  }
+  exports.searchPost = async (titleSearched) => {
+    const query = 'SELECT * FROM post WHERE title LIKE ?';
+    const searchTerm = `%${titleSearched}%`;
+  
+    try {
+      const [result] = await con.query(query, [searchTerm]);
+      console.log('Post a été trouvé avec succès');
+      return result;
+    } catch (err) {
+      console.log(`Erreur lors de la recherche du post :`, err);
+      throw err;
+    }
+  };
+  
+  
 
   
 
