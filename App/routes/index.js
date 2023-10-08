@@ -11,9 +11,9 @@ router.get('/', postController.getAllPosts)
 
 // --------------------------- Gestion ------------------------------
 router.get('/gestion', categorieController.getAllCategories)
-router.post('/gestion/addArticle',upload.single("image"),postController.addPost);
-router.get('/gestion/getallpost', postController.getAllPosts); //khasni ncreer route akhor
-router.get('/gestion/search/getPosts', postController.getPostSearched); //khasni ncreer route akhor
+router.post('/gestion/addArticle',upload.single("image"),postController.addPostWithCategorie);
+router.get('/gestion/getallpost', postController.getAllPosts); 
+router.get('/gestion/search/getPosts', postController.getPostSearched); 
 
 router.post('/gestion/update/:id',async (req, res)=>{
     let idPost = req.params.id;

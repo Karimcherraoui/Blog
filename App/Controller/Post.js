@@ -5,6 +5,8 @@ const Joi = require("joi");
 const fs = require("fs");
 
 
+
+
 exports.getPostSearched = async (req, res) => {
   let searchTitle = req.query.searchedName;
   let categories = await categorieModel.getAllCategories();
@@ -30,7 +32,6 @@ exports.getPostSearched = async (req, res) => {
 exports.getAllPosts = async (req, res) => {
   let blogs = await postModel.getPosts();
  let categories = await categorieModel.getAllCategories();
-
   try {
     if (blogs) {
       res.render("home", { blogs ,categories, title:"Home Page"});
@@ -59,31 +60,59 @@ exports.getPostById = async (req, res) => {
     }
   };
 
-exports.addPost = async (req, res) => {
-  let title = req.body.title;
-  let auteur = req.body.auteur;
-  let content = req.body.content;
-  let pathImageTemp = req.file.path;
-  let extention = req.file.mimetype.split("/")[1];
-  let target = "public/upload/" + req.file.filename + "." + extention;
-  let imageName = req.file.filename + "." + extention;
 
-  fs.readFile(pathImageTemp, (err, data) => {
-    fs.writeFile(target, data, () => {
-      let add = postModel.addPost(title, auteur ,content, imageName);
-      if (add == false) {
-        console.log(`Erreur lors de l'insertion du post :`, err);
-      } else {
-        console.log("Post inséré avec succès");
-        res.redirect("/");
-      }
-      console.log("image upload avec succès");
-    });
+exports.addPostWithCategorie = async (req, res) => {
+  const postSchema = Joi.object({
+    title: Joi.string().required(),
+    auteur: Joi.string().required(),
+    content: Joi.string().required(),
+    categories: Joi.array().items(Joi.number()).required(),
   });
-};
+  const { error , value} = postSchema.validate(req.body);
+
+  if (error) {
+    console.log(error)
+    return res.send('Invalid input. Please check your data.' );
+  }
+    let title = req.body.title;
+    let auteur = req.body.auteur;
+    let content = req.body.content;
+    let pathImageTemp = req.file.path;
+    let extention = req.file.mimetype.split("/")[1];
+    let target = "public/upload/" + req.file.filename + "." + extention;
+    let imageName = req.file.filename + "." + extention;
+    let categories_id = req.body.categories;
+    console.log('categorie IDs : ' + categories_id)
+    fs.readFile(pathImageTemp, (err, data) => {
+      fs.writeFile(target, data, () => {
+        let add = postModel.addPostWithCategorie(title, auteur ,content, imageName, categories_id);
+        if (add == false) {
+          console.log(`Erreur lors de l'insertion du post :`, err);
+        } else {
+          console.log("Post inséré avec succès");
+          res.redirect("/");
+        }
+        console.log("image upload avec succès");
+      });
+    });
+  }
+
+
 
 
 exports.updatePost = async (req, res) => {
+  const updateSchema = Joi.object({
+    title: Joi.string().required(),
+    auteur: Joi.string().required(),
+    content: Joi.string().required(),
+    categories: Joi.array().items(Joi.number()).required(),
+  });
+  const { error , value} = updateSchema.validate(req.body);
+
+  if (error) {
+    console.log(error)
+    return res.send('Invalid input. Please check your data.' );
+  }
   let title = req.body.title;
   let auteur = req.body.auteur;
   let content = req.body.content;
@@ -129,11 +158,12 @@ exports.deletePost = async (req, res) => {
   try {
     const idPost = req.params.id;
     await postModel.deletePost(idPost); 
-
     console.log("Post has been deleted successfully");
     res.redirect("/"); 
+    return true
   } catch (err) {
     console.error(`Error deleting the post:`, err);
     res.status(500).send("Error deleting the post");
+    return false
   }
 };

@@ -1,8 +1,22 @@
 
 const categorieModel = require("../model/categorie");
 
+const Joi = require("joi");
+
 
 exports.addCategorie = async (req,res) =>{
+  console.log(typeof req.body.name);
+  const nameSchema = Joi.object({
+    name: Joi.string().required()
+  })
+  
+  const { error , value} = nameSchema.validate(req.body);
+console.log('test : ' + req.body.name )
+  if (error) {
+    console.log(error)
+    return res.send('Invalid input. Please check your data.' );
+  }
+
         let nameCategorie = req.body.name
         let add = categorieModel.addCategorie(nameCategorie)
         if (add == false) {
@@ -42,6 +56,17 @@ exports.getAllCategories = async (req, res) => {
 //   };
 
   exports.updateCategorie = async (req,res) => {
+    const categorieSchema = Joi.object({
+      categorieID: Joi.number().required(),
+      nameCategorie: Joi.string(),
+    });
+    
+    const { error , value} = categorieSchema.validate(req.body);
+  
+    if (error) {
+      console.log(error)
+      return res.send('Invalid input. Please check your data.' );
+    }
     let nameCategorie = req.body.nameCategorie
     let idCategorie = req.body.categorieID
     let update = categorieModel.updateCategorie(nameCategorie,idCategorie)
