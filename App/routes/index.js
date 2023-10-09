@@ -34,14 +34,15 @@ router.post('/gestion/addCategorie',categorieController.addCategorie);
 
 // --------------------------- Article ------------------------------
 router.get('/article/:id', postController.getPostById);
+
 router.post('/article/delete/:id', postController.deletePost);
 router.post('/article/update/:id',upload.single("image"), postController.updatePost);
-// router.get('/search',postController.searchPost)
 
 // --------------------------- Categorie ------------------------------
 
 router.post('/categorie/delete/', categorieController.deleteCategorie);
 router.post('/categorie/update/', categorieController.updateCategorie);
+router.get('/categorie/article/:id', postController.getPostByCategorie);
 
 
 

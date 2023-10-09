@@ -14,18 +14,17 @@ const con = require('../db')
     return result
   }
 
+  exports.getPostByCategorie = async (categorie_id) => {
+    const [result] = await con.query(`SELECT p.*
+    FROM post AS p
+    JOIN post_Categories AS pc ON p.postID = pc.post_id
+    WHERE pc.categorie_id = ?;
+    `,categorie_id)
+    return result
+  }
 
-  // exports.addPost = async (title,auteur,content,image)=>{
 
-  //   const query = 'INSERT INTO post (title,auteur,content,image) VALUES (?,?,?,?)'
-  //       con.query(query,[title,auteur,content,image],(err,results)=>{
-  //           if (err) {
-  //               console.log(`Erreur lors de l'insertion du post :`, err);
-  //             } else {
-  //               console.log('Post inséré avec succès');
-  //             }
-  //       })
-  // }
+
 
   exports.addPost = async (title, auteur, content, image) => {
     const query = 'INSERT INTO post (title, auteur, content, image) VALUES (?, ?, ?, ?)';
@@ -34,7 +33,6 @@ const con = require('../db')
     try {
       const [result] = await con.query(query, values);
       const postId = result.insertId; 
-      console.log('from result : ' + postId);
       return postId;
     } catch (err) {
       console.log(`Erreur lors de l'insertion du post :`, err);
@@ -46,7 +44,6 @@ const con = require('../db')
     try {
       const postId = await this.addPost(title, auteur, content, image);
   
-      // Ensure that categories_id is an array
       if (!Array.isArray(categories_id)) {
         categories_id = [categories_id];
       }

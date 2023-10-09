@@ -5,13 +5,11 @@ const Joi = require("joi");
 
 
 exports.addCategorie = async (req,res) =>{
-  console.log(typeof req.body.name);
   const nameSchema = Joi.object({
     name: Joi.string().required()
   })
   
   const { error , value} = nameSchema.validate(req.body);
-console.log('test : ' + req.body.name )
   if (error) {
     console.log(error)
     return res.send('Invalid input. Please check your data.' );
@@ -41,19 +39,6 @@ exports.getAllCategories = async (req, res) => {
       res.status(500).send("Internal Server Error");
     }
   };
-//   exports.getHome = async (req, res) => {
-//     try {
-//       const categories = await categorieModel.getAllCategories();
-//       if (categories) {
-//         res.render("home", { categories, title: "Home Page" });
-//       } else {
-//         res.status(404).send("No categorie found.");
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).send("Internal Server Error");
-//     }
-//   };
 
   exports.updateCategorie = async (req,res) => {
     const categorieSchema = Joi.object({
@@ -64,7 +49,6 @@ exports.getAllCategories = async (req, res) => {
     const { error , value} = categorieSchema.validate(req.body);
   
     if (error) {
-      console.log(error)
       return res.send('Invalid input. Please check your data.' );
     }
     let nameCategorie = req.body.nameCategorie
@@ -84,7 +68,6 @@ exports.getAllCategories = async (req, res) => {
 exports.deleteCategorie = async (req, res) => {
     try {
       const idCategorie = req.body.categorieID;
-      console.log('id from controller :' + idCategorie)
 
       await categorieModel.deleteCategorie(idCategorie); 
       console.log("categorie has been deleted successfully");

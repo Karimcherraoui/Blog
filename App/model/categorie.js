@@ -38,7 +38,6 @@ exports.updateCategorie = async (name,id) => {
 exports.deleteCategorie = async (id)=>{
 
     const query = 'DELETE FROM categorie WHERE categorieID = ? ';
-    console.log('id from model :' + id)
     con.query(query,id,(err,results)=>{
       if (err) {
         console.log(`Erreur lors de suppression du categorie :`, err);

@@ -71,7 +71,6 @@ exports.addPostWithCategorie = async (req, res) => {
   const { error , value} = postSchema.validate(req.body);
 
   if (error) {
-    console.log(error)
     return res.send('Invalid input. Please check your data.' );
   }
     let title = req.body.title;
@@ -82,7 +81,6 @@ exports.addPostWithCategorie = async (req, res) => {
     let target = "public/upload/" + req.file.filename + "." + extention;
     let imageName = req.file.filename + "." + extention;
     let categories_id = req.body.categories;
-    console.log('categorie IDs : ' + categories_id)
     fs.readFile(pathImageTemp, (err, data) => {
       fs.writeFile(target, data, () => {
         let add = postModel.addPostWithCategorie(title, auteur ,content, imageName, categories_id);
@@ -110,7 +108,6 @@ exports.updatePost = async (req, res) => {
   const { error , value} = updateSchema.validate(req.body);
 
   if (error) {
-    console.log(error)
     return res.send('Invalid input. Please check your data.' );
   }
   let title = req.body.title;
@@ -118,7 +115,6 @@ exports.updatePost = async (req, res) => {
   let content = req.body.content;
   let idPost = req.params.id;
 
-  // Check if a file was uploaded
   if (req.file) {
     let pathImageTemp = req.file.path;
     let extention = req.file.mimetype.split("/")[1];
@@ -138,7 +134,6 @@ exports.updatePost = async (req, res) => {
       });
     });
   } else {
-    // Handle the case when no file was uploaded
     console.log("No file uploaded");
     let imagePrevious = req.body.imagePrevious
 
@@ -151,6 +146,21 @@ exports.updatePost = async (req, res) => {
     }
   }
 };
+
+exports.getPostByCategorie = async (req,res) => {
+  let idCategorie = req.params.id;
+  let article = await postModel.getPostByCategorie(idCategorie);
+  try {
+    if (article) {
+      res.render("article", { article ,title:article.title });
+    } else {
+      res.status(404).send("No posts found.");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+}
 
 
 
